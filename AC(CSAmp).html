@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Common-Source (with Source Resistor) — AC Equivalent & Steps</title>
+  <style>
+    body{font-family:system-ui, -apple-system, Arial; padding:18px; line-height:1.45;}
+    h1{font-size:20px;margin-bottom:6px}
+    h2{font-size:16px;margin:14px 0 6px}
+    .row{display:flex;gap:24px;align-items:flex-start}
+    .card{background:#fff;border-radius:8px;padding:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06);flex:1}
+    svg{width:100%;height:260px}
+    .eq{background:#f8f8f8;padding:8px;border-radius:6px;margin:6px 0;font-family:monospace}
+    ol{padding-left:18px}
+    .small{font-size:13px;color:#555}
+  </style>
+</head>
+<body>
+  <h1>AC Equivalent: Common‑Source MOSFET with Source Resistor (R<sub>S</sub>)</h1>
+  <p class="small">Two AC cases are shown side-by-side: <strong>unbypassed R<sub>S</sub></strong> (left) and <strong>bypassed R<sub>S</sub></strong> (right). The output node and the output-equivalent circuit (R<sub>D</sub>//r<sub>o</sub> and any load R<sub>L</sub>) are emphasised.</p>
+
+  <div class="row">
+    <div class="card">
+      <h2>1) AC small-signal diagram — Unbypassed R<sub>S</sub></h2>
+      <svg viewBox="0 0 1000 360" xmlns="http://www.w3.org/2000/svg" aria-label="Unbypassed source diagram">
+        <!-- left: input source -->
+        <g transform="translate(10,20)">
+          <text x="10" y="22">v<sub>in</sub></text>
+          <circle cx="60" cy="20" r="10" fill="#fff" stroke="#333"/>
+          <line x1="70" y1="20" x2="150" y2="20" stroke="#333" stroke-width="2"/>
+
+          <!-- gate node -->
+          <rect x="150" y="8" width="74" height="24" rx="3" fill="#fff" stroke="#333"/>
+          <text x="156" y="24">Gate (g)</text>
+
+          <!-- gate to source cap (infinite input imped.) -->
+          <line x1="224" y1="20" x2="320" y2="20" stroke="#333" stroke-width="2"/>
+
+          <!-- source node -->
+          <g transform="translate(320,0)">
+            <text x="8" y="-2">v<sub>s</sub></text>
+            <!-- source resistor -->
+            <line x1="0" y1="20" x2="40" y2="20" stroke="#333" stroke-width="2"/>
+            <rect x="40" y="12" width="80" height="16" rx="4" fill="#fff" stroke="#333"/>
+            <text x="44" y="24">R<sub>S</sub></text>
+            <line x1="120" y1="20" x2="180" y2="20" stroke="#333" stroke-width="2"/>
+            <text x="188" y="24">AC ground</text>
+          </g>
+
+          <!-- drain -->
+          <line x1="224" y1="20" x2="224" y2="-40" stroke="#333" stroke-width="2"/>
+          <text x="188" y="-48">v<sub>g</sub></text>
+
+          <!-- gm current source from drain to source -->
+          <g transform="translate(224,-40)">
+            <line x1="0" y1="0" x2="160" y2="0" stroke="#333" stroke-width="1.6"/>
+            <path d="M20 0 L20 40 L140 40 L140 0" fill="#fff" stroke="#333"/>
+            <text x="28" y="26">g<sub>m</sub>·v<sub>gs</sub></text>
+          </g>
+
+          <!-- drain node vertical down to RD and ro -->
+          <line x1="384" y1="-40" x2="384" y2="20" stroke="#333" stroke-width="2"/>
+          <g transform="translate(384,20)">
+            <text x="-18" y="38">v<sub>d</sub> = v<sub>out</sub></text>
+            <!-- RD to Vdd (AC ground) up -->
+            <line x1="0" y1="0" x2="0" y2="-40" stroke="#333" stroke-width="2"/>
+            <rect x="-16" y="-86" width="32" height="40" rx="4" fill="#fff" stroke="#333"/>
+            <text x="-14" y="-60">R<sub>D</sub></text>
+            <line x1="0" y1="-86" x2="0" y2="-120" stroke="#333" stroke-width="2"/>
+            <text x="8" y="-128">AC V<sub>DD</sub> (ground)</text>
+
+            <!-- r_o to AC VDD (modelled as current source internal) -->
+            <line x1="40" y1="0" x2="120" y2="0" stroke="#333" stroke-width="2"/>
+            <rect x="120" y="-12" width="56" height="24" rx="4" fill="#fff" stroke="#333"/>
+            <text x="126" y="6">r<sub>o</sub></text>
+            <line x1="176" y1="0" x2="176" y2="-120" stroke="#333" stroke-width="2"/>
+            <text x="184" y="-128">AC V<sub>DD</sub></text>
+
+            <!-- optional load RL to ground at output right -->
+            <line x1="0" y1="40" x2="0" y2="80" stroke="#333" stroke-width="2"/>
+            <rect x="-28" y="80" width="56" height="18" rx="3" fill="#fff" stroke="#333"/>
+            <text x="-24" y="92">R<sub>L</sub></text>
+            <line x1="0" y1="98" x2="0" y2="126" stroke="#333" stroke-width="2"/>
+            <text x="8" y="134">AC ground</text>
+          </g>
+
+        </g>
+      </svg>
+
+      <h3>Theoretical steps (unbypassed)</h3>
+      <ol>
+        <li>Write node-voltage at source: v<sub>s</sub> = i<sub>s</sub>·R<sub>S</sub> where i<sub>s</sub> is small-signal source current.</li>
+        <li>Relate small-signal drain current: i<sub>d</sub>=g<sub>m</sub>·v<sub>gs</sub> + v<sub>ds</sub>/r<sub>o</sub> (include r<sub>o</sub> if required).</li>
+        <li>Use KCL at drain: (v<sub>out</sub>/R<sub>D</sub>) + (v<sub>out</sub>/r<sub>o</sub>) + g<sub>m</sub>v<sub>gs</sub> + (v<sub>out</sub>-v<sub>s</sub>)/r<sub>o</sub> = 0 — rearrange to solve for v<sub>out</sub>/v<sub>in</sub>.</li>
+        <li>Express v<sub>gs</sub>=v<sub>g</sub>-v<sub>s</sub>. For driven gate by source v<sub>in</sub>: v<sub>g</sub]=v<sub>in</sub> (through coupling capacitor).</li>
+        <li>Algebraically solve for A<sub>v</sub}=v<sub>out</sub>/v<sub>in</sub>. If r<sub>o</sub>>R<sub>D</sub> you can simplify r<sub>o</sub>-effects; common compact result (approx):
+          <div class="eq">A_v \approx -\dfrac{g_m R_D}{1 + g_m R_S}.</div>
+        </li>
+      </ol>
+
+    </div>
+
+    <div class="card">
+      <h2>2) AC small-signal diagram — Bypassed R<sub>S</sub> (source at AC ground)</h2>
+      <svg viewBox="0 0 1000 360" xmlns="http://www.w3.org/2000/svg" aria-label="Bypassed source diagram">
+        <g transform="translate(10,20)">
+          <text x="10" y="22">v<sub>in</sub></text>
+          <circle cx="60" cy="20" r="10" fill="#fff" stroke="#333"/>
+          <line x1="70" y1="20" x2="150" y2="20" stroke="#333" stroke-width="2"/>
+
+          <!-- gate box -->
+          <rect x="150" y="8" width="74" height="24" rx="3" fill="#fff" stroke="#333"/>
+          <text x="156" y="24">Gate (g)</text>
+
+          <line x1="224" y1="20" x2="320" y2="20" stroke="#333" stroke-width="2"/>
+
+          <!-- source now at AC ground (bypass cap) -->
+          <g transform="translate(320,0)">
+            <text x="8" y="-2">v<sub>s</sub>=0 (AC)</text>
+            <line x1="0" y1="20" x2="120" y2="20" stroke="#333" stroke-width="2"/>
+            <rect x="120" y="12" width="80" height="16" rx="4" fill="#fff" stroke="#333"/>
+            <text x="126" y="24">C<sub>S</sub> (bypass)</text>
+            <line x1="200" y1="20" x2="260" y2="20" stroke="#333" stroke-width="2"/>
+            <text x="268" y="24">AC ground</text>
+          </g>
+
+          <!-- gm source from drain to source (source is AC ground) -->
+          <line x1="224" y1="20" x2="224" y2="-40" stroke="#333" stroke-width="2"/>
+          <g transform="translate(224,-40)">
+            <line x1="0" y1="0" x2="160" y2="0" stroke="#333" stroke-width="1.6"/>
+            <path d="M20 0 L20 40 L140 40 L140 0" fill="#fff" stroke="#333"/>
+            <text x="28" y="26">g<sub>m</sub>·v<sub>gs</sub></text>
+          </g>
+
+          <!-- drain to RD and ro like before -->
+          <line x1="384" y1="-40" x2="384" y2="20" stroke="#333" stroke-width="2"/>
+          <g transform="translate(384,20)">
+            <text x="-18" y="38">v<sub>d</sub> = v<sub>out</sub></text>
+            <line x1="0" y1="0" x2="0" y2="-40" stroke="#333" stroke-width="2"/>
+            <rect x="-16" y="-86" width="32" height="40" rx="4" fill="#fff" stroke="#333"/>
+            <text x="-14" y="-60">R<sub>D</sub></text>
+            <line x1="0" y1="-86" x2="0" y2="-120" stroke="#333" stroke-width="2"/>
+            <text x="8" y="-128">AC V<sub>DD</sub> (ground)</text>
+
+            <line x1="40" y1="0" x2="120" y2="0" stroke="#333" stroke-width="2"/>
+            <rect x="120" y="-12" width="56" height="24" rx="4" fill="#fff" stroke="#333"/>
+            <text x="126" y="6">r<sub>o</sub></text>
+            <line x1="176" y1="0" x2="176" y2="-120" stroke="#333" stroke-width="2"/>
+            <text x="184" y="-128">AC V<sub>DD</sub></text>
+
+            <line x1="0" y1="40" x2="0" y2="80" stroke="#333" stroke-width="2"/>
+            <rect x="-28" y="80" width="56" height="18" rx="3" fill="#fff" stroke="#333"/>
+            <text x="-24" y="92">R<sub>L</sub></text>
+            <line x1="0" y1="98" x2="0" y2="126" stroke="#333" stroke-width="2"/>
+            <text x="8" y="134">AC ground</text>
+          </g>
+
+        </g>
+      </svg>
+
+      <h3>Theoretical steps (bypassed)</h3>
+      <ol>
+        <li>Source is at AC ground → v<sub>s</sub>=0. So v<sub>gs</sub>=v<sub>g</sub>=v<sub>in</sub> (through coupling cap).</li>
+        <li>Small-signal drain current ≈ g<sub>m</sub>·v<sub>in</sub> (plus v<sub>out</sub>/r<sub>o</sub> if included).</li>
+        <li>KCL at drain: (v<sub>out</sub>/R<sub>D</sub>) + (v<sub>out</sub>/r<sub>o</sub>) + g<sub>m</sub>v<sub>in</sub> = 0 → solve for v<sub>out</sub>/v<sub>in</sub>.</li>
+        <li>Ignoring r<sub>o</sub> (if r<sub>o</sub>≫R<sub>D</sub>):
+          <div class="eq">A_v = \dfrac{v_{out}}{v_{in}} \approx -g_m R_D.</div>
+        </li>
+        <li>If a load R<sub>L</sub> is connected at the output, replace R_D by R_D\parallel R_L in the expression above (and also include r_o parallel if needed).</li>
+      </ol>
+
+    </div>
+  </div>
+
+  <h2>3) Worked algebraic outline (one-line derivation — unbypassed, including r<sub>o</sub>)</h2>
+  <div class="card">
+    <div class="small">
+      Use KCL at the drain node (take currents leaving node as positive):
+      <div class="eq">\dfrac{v_{out}}{R_D} + \dfrac{v_{out}}{r_o} + g_m(v_g - v_s) + \dfrac{v_{out} - v_s}{r_o} = 0.</div>
+      Simplify noticing the v_out/r_o terms combine; collect v_out and v_s terms and substitute v_s = v_g \cdot \dfrac{R_S}{R_S + 1/g_{s}} but for ideal MOSFET input g_s → ∞, so v_g = v_in through coupling cap. Next, for low-frequency midband, v_s = i_s R_S where i_s = i_d + (v_s - v_out)/r_o; after algebra you arrive at a closed form. The usual compact approximate gain is:
+      <div class="eq">A_v \approx -\dfrac{g_m (R_D \parallel r_o)}{1 + g_m R_S} \quad(\text{if } r_o \gg R_D,\ \text{simplifies to } -g_m R_D/(1+g_m R_S)).</div>
+    </div>
+  </div>
+
+  <h2>4) Practical notes & next steps</h2>
+  <ul>
+    <li>If you want, I can annotate the same diagram with your actual numerical values (R<sub>D</sub>, R<sub>S</sub>, g<sub>m</sub>, r<sub>o</sub>) and compute A<sub>v</sub>, R<sub>in</sub>, R<sub>out</sub>.</li>
+    <li>To add frequency response, we include C<sub>in</sub>, C<sub>out</sub>, C<sub>gd</sub>, C<sub>gs</sub> and compute poles (I can do that next).</li>
+  </ul>
+
+  <p class="small">Diagram and steps created for study/lecture use. Modify values or request a PDF/PNG export if you want a downloadable image.</p>
+</body>
+</html>
